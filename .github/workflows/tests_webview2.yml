@@ -18,6 +18,9 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 18
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
     - run: npm ci
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
@@ -26,5 +29,5 @@ jobs:
       working-directory: tests/webview2/webview2-app/
     - run: npm run webview2test
     - run: ./utils/upload_flakiness_dashboard.sh ./test-results/report.json
-      if: always()
+      if: ${{ !cancelled() }}
       shell: bash
